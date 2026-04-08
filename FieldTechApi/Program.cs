@@ -1,41 +1,40 @@
+using FieldTechApi.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+// Add services to the container for Swagger/OpenAPI
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+// Temporary in-memory data store for Phase 1
+var reports = new List<FieldReport>();
 
-app.MapGet("/weatherforecast", () =>
+// --- Minimal API Endpoints ---
+
+// GET: Retrieve all field reports
+app.MapGet("/api/reports", () => Results.Ok(reports))
+   .WithName("GetReports");
+
+// POST: Submit a new field report
+app.MapPost("/api/reports", (FieldReport report) =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    report.Id = Guid.NewGuid();
+    report.CreatedAt = DateTime.UtcNow;
+    reports.Add(report);
+    
+    return Results.Created($"/api/reports/{report.Id}", report);
 })
-.WithName("GetWeatherForecast");
+.WithName("CreateReport");
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
