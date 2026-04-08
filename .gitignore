@@ -1,5 +1,6 @@
 bin/
 obj/
+.env
 
 # User-specific files
 *.rsuser
