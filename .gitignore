@@ -1,0 +1,37 @@
+bin/
+obj/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# User secrets
+secrets.json
+
+# Local configuration
+appsettings.Development.json
+appsettings.Local.json
+
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal
+
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+.idea/
+*.sln.iml
