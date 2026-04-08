@@ -7,13 +7,22 @@
 
 using FieldTechApi.Data;
 using FieldTechApi.Models;
+using FieldTechApi.Services;
 using Microsoft.EntityFrameworkCore;
+using DotNetEnv;
+
+// Load the .env file before the WebApplication builder spins up
+Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add the DbContext to the container, pointing to SQLite
+// Ensure the builder explicitly pulls in the newly loaded environment variables
+builder.Configuration.AddEnvironmentVariables(); 
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddSingleton<HazardTriageService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
