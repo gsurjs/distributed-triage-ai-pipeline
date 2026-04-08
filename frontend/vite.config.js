@@ -6,13 +6,17 @@
 
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    tailwindcss(),
+  ],
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5211', // <-- UPDATE THIS PORT TO MATCH YOUR API
+        target: 'http://localhost:5211',
         changeOrigin: true,
         secure: false, // Required because .NET uses self-signed dev certificates
       }
