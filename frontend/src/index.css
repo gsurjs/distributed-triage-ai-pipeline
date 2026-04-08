@@ -1,0 +1,6 @@
+/* ==============================================================================
+   INTEGRATION: Tailwind CSS v4 Core
+   PURPOSE: Imports the Tailwind engine natively. 
+============================================================================== */
+
+@import "tailwindcss";
